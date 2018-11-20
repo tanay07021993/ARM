@@ -1,6 +1,6 @@
 AREA     appcode, CODE, READONLY
      export __main	 
-     IMPORT printMSg		 
+     IMPORT printMsg		 
 	 ENTRY 
 __main  function	
 	      VLDR.F32 S0 , =1 ;x0 
@@ -74,8 +74,8 @@ BranchTable_Byte
 	DCB   ((XOR_LOGIC - AND_LOGIC)/2)
 	DCB   ((XNOR_LOGIC - AND_LOGIC)/2)
 	
-SIGMOID	      ;MOV r0 , #0x20000000 ; location will have value of 1 	
-              VMOV.F32 S1 , S15  ;S1 will keep reference of x
+	      	
+SIGMOID       VMOV.F32 S1 , S15  ;S1 will keep reference of x
 	          ;MOV  r3 ,#0x3f800000   ;Taking constant number 1.
 	          ;STR  r3 , =1 ;
 			  VLDR.F32 S0 ,=1  ;
@@ -154,7 +154,7 @@ OUTPUT     VLDR.F32 S16 , =0.5
 		   ITE  HI
 		   MOVHI r0 , #0
 		   MOVLS r0 , #1
-		   BL printMSg
+		   BL printMsg
 Stop       B   Stop		   
         endfunc
       end
