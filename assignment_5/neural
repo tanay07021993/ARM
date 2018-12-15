@@ -1,6 +1,8 @@
-AREA     appcode, CODE, READONLY
+ AREA     appcode, CODE, READONLY
      export __main	 
-     IMPORT printMsg		 
+     IMPORT printMsg
+	IMPORT Printtruthtable
+     		 
 	 ENTRY 
 __main  function	
 	      VLDR.F32 S0 , =1 ;x0 
@@ -155,6 +157,39 @@ OUTPUT     VLDR.F32 S16 , =0.5
 		   MOVHI r0 , #0
 		   MOVLS r0 , #1
 		   BL printMsg
-Stop       B   Stop		   
-        endfunc
-      end
+ ADR.W r8 , Table_Byte   
+  TBB [r8 , r9 ]     
+input2    VLDR.F32 s11 , =1 ;X0 DATA
+          VLDR.F32 s12 , =0 ;X1 DATA
+          VLDR.F32 s13 , =1 ;X2 DATA
+          ADD r9 , r9 , #1                    
+  B start
+  
+input3    VLDR.F32 s11 , =1 ;X0 DATA
+          VLDR.F32 s12 , =1 ;X1 DATA
+          VLDR.F32 s13 , =0 ;X2 DATA   
+          ADD r9 , r9 , #1                   
+  B start
+  
+input4    VLDR.F32 s11 , =1 ;X0 DATA
+          VLDR.F32 s12 , =1 ;X1 DATA
+          VLDR.F32 s13 , =1 ;X2 DATA
+          ADD r9 , r9 , #1                   
+   B start
+ 
+                MOV R0 , R7
+                MOV R7 ,#0 
+                BL Printtruthtable
+                CMP R12 ,#6
+                IT HI
+                BHI stop1
+                ADD R12 ,R12 ,#1
+                B start
+stop1           B   stop1 
+Table_Byte   
+        DCB   0   
+        DCB   ((input3-input2)/2) 
+        DCB   ((input4-input2)/2) 
+        DCB   ((stop-input2)/2)   
+      endfunc
+    end
